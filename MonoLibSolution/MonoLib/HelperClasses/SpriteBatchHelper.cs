@@ -29,7 +29,7 @@ namespace MonoLib
                 int x = i % (radius * 2);
                 int y = i / (radius * 2);
 
-                if (Math.Sqrt(Math.Pow(x - radius, 2) + Math.Pow(y - radius, 2)) < radius)
+                if (System.Math.Sqrt(System.Math.Pow(x - radius, 2) + System.Math.Pow(y - radius, 2)) < radius)
                 {
                     colors[i] = color;
                 }

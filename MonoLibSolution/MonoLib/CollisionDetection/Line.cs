@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoLib.CollisionDetection.SeparatingAxisTheorem;
-using MonoLib.Vectors;
+using MonoLib.MathClasses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace MonoLib
         public Vector2D First { get; private set; }
         public Vector2D Second { get; private set; }
 
-        public float Rotation => (float)Math.Atan2(Second.Y - First.Y, Second.X - First.X);
+        public float Rotation => (float)System.Math.Atan2(Second.Y - First.Y, Second.X - First.X);
         public float Length => Vector2D.Distance(First, Second);
 
         public Vector2D Center => (First + Second) / 2;
@@ -44,8 +44,8 @@ namespace MonoLib
             First = center - newVector;
             Second = center + newVector;*/
 
-            First.RotateAbout(center, theta);
-            Second.RotateAbout(center, theta);
+            First.RotateAbout(theta, center);
+            Second.RotateAbout(theta, center);
         }
         public void TranslateBy(Vector2D delta)
         {
@@ -58,8 +58,8 @@ namespace MonoLib
 
         public (float min, float max) ProjectOntoLine(Line line)
         {
-            float first = Vector2D.Dot(First, line.Delta) / (float)Math.Pow(line.Length, 2);
-            float second = Vector2D.Dot(Second, line.Delta) / (float)Math.Pow(line.Length, 2);
+            float first = Vector2D.Dot(First, line.Delta) / (float)System.Math.Pow(line.Length, 2);
+            float second = Vector2D.Dot(Second, line.Delta) / (float)System.Math.Pow(line.Length, 2);
 
             if (first < second)
             {

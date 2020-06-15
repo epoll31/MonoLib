@@ -6,20 +6,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoLib.Vectors
+namespace MonoLib.MathClasses
 {
     public class Vector2D
     {
-        public float X { get; private set; }
-        public float Y { get; private set; }
+        public Matrix2D Matrix { get; private set; }
 
-        public Vector2D(Vector2 data)
+        public float X
         {
-            X = data.X;
-            Y = data.Y;
+            get
+            {
+                return Matrix.X;
+            }
+            set
+            {
+                Matrix *= Matrix2D.CreateTranslation(value - X, 0);
+            }
         }
+        public float Y
+        {
+            get
+            {
+                return Matrix.Y;
+            }
+            set
+            {
+                Matrix *= Matrix2D.CreateTranslation( 0, value - Y);
+            }
+        }
+
         public Vector2D(float x, float y)
-            : this(new Vector2(x, y))
+        {
+            Matrix = Matrix2D.CreateTranslation(x, y);
+        }
+        public Vector2D(Vector2 data)
+            : this(data.X, data.Y)
+        {
+        }
+        public Vector2D(Vector2D data)
+            : this (data.X, data.Y)
         {
         }
         public Vector2D()
@@ -60,13 +85,13 @@ namespace MonoLib.Vectors
             return first.X * second.X + first.Y * second.Y;
         }
 
-        public void RotateAbout(Vector2D focus, float theta)
+        public void RotateAbout(float theta, Vector2D focus)
+            => RotateAbout(theta, focus.X, focus.Y);
+        public void RotateAbout(float theta, Vector2 focus)
+            => RotateAbout(theta, focus.X, focus.Y);
+        public void RotateAbout(float theta, float x, float y)
         {
-            float distance = Distance(focus, this);
-            float rotation = (float)Math.Atan2(this.Y - focus.Y, this.X - focus.X);
-            float newRotation = rotation + theta;
-            X = focus.X + (float)Math.Cos(newRotation) * distance;
-            Y = focus.Y + (float)Math.Sin(newRotation) * distance;
+            Matrix *= Matrix2D.CreateRotationZ(theta, x, y);
         }
 
         public Vector2D Copy()
@@ -74,10 +99,10 @@ namespace MonoLib.Vectors
             return new Vector2D(X, Y);
         }
 
-        public static Vector2D Zero => (Vector2D)Vector2.Zero;
-        public static Vector2D One => (Vector2D)Vector2.One;
-        public static Vector2D UnitX => (Vector2D)Vector2.UnitX;
-        public static Vector2D UnitY => (Vector2D)Vector2.UnitY;
+        public static Vector2D Zero => new Vector2D(0, 0);
+        public static Vector2D One => new Vector2D(1, 1);
+        public static Vector2D UnitX => new Vector2D(1, 0);
+        public static Vector2D UnitY => new Vector2D(0, 1);
 
 
         public static explicit operator Vector2(Vector2D vector2D)

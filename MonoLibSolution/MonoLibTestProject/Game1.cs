@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoLib;
 using MonoLib.CollisionDetection;
-using MonoLib.Vectors;
+using MonoLib.MathClasses;
 using System;
 using System.Diagnostics;
 

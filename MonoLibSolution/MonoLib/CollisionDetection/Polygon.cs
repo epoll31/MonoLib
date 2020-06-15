@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoLib.CollisionDetection.SeparatingAxisTheorem;
-using MonoLib.Vectors;
+using MonoLib.MathClasses;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -22,7 +22,8 @@ namespace MonoLib.CollisionDetection
 
                 foreach (Vector2D vertex in Vertices)
                 {
-                    center += vertex;
+                    center.X += vertex.X;
+                    center.Y += vertex.Y;
                 }
                 return center / Vertices.Length;
             }
@@ -32,7 +33,8 @@ namespace MonoLib.CollisionDetection
 
                 for (int i = 0; i < Vertices.Length; i++)
                 {
-                    Vertices[i] += delta;
+                    Vertices[i].X += delta.X;
+                    Vertices[i].Y += delta.Y;
                 }
             }
         }
@@ -45,7 +47,7 @@ namespace MonoLib.CollisionDetection
             }
 
             Vertices = vertices;
-            
+
             Edges = new Line[Vertices.Length];
             for (int i = 0; i < Vertices.Length; i++)
             {
@@ -64,8 +66,8 @@ namespace MonoLib.CollisionDetection
 
             for (int i = 0; i < numberOfVertices; i++)
             {
-                Vertices[i] = position + new Vector2D((float)Math.Cos(startTheta), (float)Math.Sin(startTheta)) * radius;
-                startTheta += (float)Math.PI * 2 / numberOfVertices;
+                Vertices[i] = position + new Vector2D((float)System.Math.Cos(startTheta), (float)System.Math.Sin(startTheta)) * radius;
+                startTheta += (float)System.Math.PI * 2 / numberOfVertices;
             }
 
             Edges = new Line[numberOfVertices];
@@ -87,7 +89,7 @@ namespace MonoLib.CollisionDetection
             Vector2D center = Center.Copy();
             foreach (Vector2D vertex in Vertices)
             {
-                vertex.RotateAbout(center, theta);
+                vertex.RotateAbout(theta, center);
             }
         }
         public void TranslateTo(Vector2D position)
